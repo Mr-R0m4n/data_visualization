@@ -1,11 +1,12 @@
 import Datatable from "../Data/Datatable";
-import Card from "../UI/Card";
 
 import css from './Sidebar.module.css'
+import Card from "../UI/Card";
 
 const Sidebar = () => {
     return (
-        <Card className={css.sidebar}>
+        <Card
+            className={css.sidebar}>
             <Datatable/>
         </Card>
     )

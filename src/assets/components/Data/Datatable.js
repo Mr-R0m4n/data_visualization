@@ -5,7 +5,7 @@ import css from'./Datatable.module.css'
 const Datatable = () => {
     return (
         <Card className={css.datatable}>
-            DATATABLE
+            <h3>DATATABLE</h3>
         </Card>
     );
 };

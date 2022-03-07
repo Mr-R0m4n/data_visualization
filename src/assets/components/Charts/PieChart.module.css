@@ -1,6 +1,16 @@
 .pieChart {
-    background: #5EB360;
+    background: #fff;
     grid-area: 1 / 2 / 2 / 3;
-    margin: 25px 25px 0 0;
-    box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 6px 6px;
+}
+
+.pieChart > h3 {
+    color: #000;
+}
+
+.canvas {
+    background:linear-gradient(to right, #5EB360, #8ec98f);
+    border-radius: 25px;
+    position: relative;
+    top: 20px;
+    left: 20px
 }

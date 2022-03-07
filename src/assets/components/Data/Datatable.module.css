@@ -1,5 +1,8 @@
 .datatable {
-    background: #fff;
-    margin: 25px;
+    background: linear-gradient(to right, #505050, #848484);
+    height: 100%;
+}
+
+.datatable > h3 {
     color: #000;
 }
