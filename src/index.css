@@ -68,29 +68,14 @@
   font-weight: bold;
 }
 
-body {
+* {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
   font-family: "Poppins", sans-serif;
-  background: white linear-gradient(225deg,
-  #ffeb7a,
-  #86d886,
-  #00a2b7,
-  #823caa,
-  #e73c83
-  );
-  background-size: 500% 500%;
-  animation: gradient 50s ease infinite;
+  color: #fff;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0 50%;
-  }
+body {
+  background: #eaeaea;
 }
