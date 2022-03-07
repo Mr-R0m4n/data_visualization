@@ -1,5 +1,96 @@
-* {
-  font-family: Poppins, Arial, serif;
-  margin: 0;
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-Light.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-LightItalic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-Medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-MediumItalic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-SemiBoldItalic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/font/Poppins/Poppins-BoldItalic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: bold;
+}
+
+body {
   box-sizing: border-box;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: white linear-gradient(225deg,
+  #ffeb7a,
+  #86d886,
+  #00a2b7,
+  #823caa,
+  #e73c83
+  );
+  background-size: 500% 500%;
+  animation: gradient 50s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
 }
