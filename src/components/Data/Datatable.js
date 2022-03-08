@@ -1,6 +1,6 @@
 import Card from "../UI/Card";
 
-import css from'./Datatable.module.css'
+import css from './Datatable.module.css'
 
 const Datatable = () => {
 
@@ -8,19 +8,19 @@ const Datatable = () => {
     for(let i = 0; i <= 10; i++){
         tablerows.push(
             <tr key={i}>
-                <td suppressContentEditableWarning={true} contentEditable>0</td>
-                <td suppressContentEditableWarning={true} contentEditable>0</td>
+                <td suppressContentEditableWarning={true} contentEditable></td>
+                <td suppressContentEditableWarning={true} contentEditable></td>
             </tr>
         )
     }
 
-    const handler = () => {
+    const tableInputHandler = () => {
         console.log('something')
     }
 
     return (
         <Card className={css.datatable}>
-            <table onChange={handler}>
+            <table onInput={tableInputHandler}>
                 <thead>
                     <tr>
                         <th contentEditable suppressContentEditableWarning={true}>X</th>

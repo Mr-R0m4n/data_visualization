@@ -10,6 +10,7 @@
     width: 100%;
     border-radius: 25px;
     padding: 25px;
+    table-layout: fixed;
 }
 
 .datatable th {
