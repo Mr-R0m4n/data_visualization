@@ -1,17 +1,14 @@
 import Card from "../UI/Card";
+import Canvas from "./Canvas";
 
 import css from './PieChart.module.css'
-import {useRef} from "react";
 
 const PieChart = () => {
-    const canvasRef = useRef()
 
     return (
         <Card className={css.pieChart}>
             <h3>PIECHART</h3>
-            <Card className={css.canvas}>
-                <canvas ref={canvasRef}/>
-            </Card>
+            <Canvas color={'linear-gradient(to top, #5EB360, #8ec98f)'}/>
         </Card>
     )
 }

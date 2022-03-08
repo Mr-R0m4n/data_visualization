@@ -6,11 +6,3 @@
 .lineChart > h3 {
     color: #000;
 }
-
-.canvas {
-    background: linear-gradient(to right, #E62F69, #eb5887);
-    border-radius: 25px;
-    position: relative;
-    top: 20px;
-    left: 20px
-}

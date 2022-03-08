@@ -6,11 +6,3 @@
 .pieChart > h3 {
     color: #000;
 }
-
-.canvas {
-    background:linear-gradient(to right, #5EB360, #8ec98f);
-    border-radius: 25px;
-    position: relative;
-    top: 20px;
-    left: 20px
-}
