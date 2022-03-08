@@ -2,7 +2,7 @@ import BarChart from "../Charts/BarChart";
 import PieChart from "../Charts/PieChart";
 import LineChart from "../Charts/LineChart";
 
-import css from './Main.module.css'
+import css from './Main.module.css';
 
 const Main = () => {
     return (
@@ -11,7 +11,7 @@ const Main = () => {
             <PieChart/>
             <LineChart/>
         </main>
-    )
-}
+    );
+};
 
 export default Main;

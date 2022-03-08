@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import TabledataProvider from "./context/tabledata-context";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <TabledataProvider>
+        <App/>
+    </TabledataProvider>,
+    document.getElementById('root')
 );

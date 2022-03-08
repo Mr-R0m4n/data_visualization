@@ -1,34 +1,58 @@
+import {useContext, useRef} from "react";
+import {TabledataContext} from "../../context/tabledata-context";
+
 import Card from "../UI/Card";
 
-import css from './Datatable.module.css'
+import css from './Datatable.module.css';
+
 
 const Datatable = () => {
+    const [state, dispatch] = useContext(TabledataContext);
+
+    const tableRef = useRef();
+
+    const tableInputHandler = () => {
+        let titleArray = [];
+        let valueArray = [];
+
+        for (let i = 1, row; row = tableRef.current.rows[i]; i++) {
+            titleArray.push(row.cells[0].innerHTML);
+        }
+        for (let i = 1, row; row = tableRef.current.rows[i]; i++) {
+            valueArray.push(row.cells[1].innerHTML);
+        }
+
+        dispatch({
+            type: 'TITLE',
+            payload: titleArray
+        });
+        dispatch({
+            type: 'VALUE',
+            payload: valueArray
+        });
+    };
 
     let tablerows = [];
-    for(let i = 0; i <= 10; i++){
+    for (let i = 0; i < 10; i++) {
         tablerows.push(
             <tr key={i}>
                 <td suppressContentEditableWarning={true} contentEditable></td>
                 <td suppressContentEditableWarning={true} contentEditable></td>
             </tr>
-        )
-    }
-
-    const tableInputHandler = () => {
-        console.log('something')
+        );
     }
 
     return (
         <Card className={css.datatable}>
-            <table onInput={tableInputHandler}>
+            <table ref={tableRef} onInput={tableInputHandler}>
                 <thead>
-                    <tr>
-                        <th contentEditable suppressContentEditableWarning={true}>X</th>
-                        <th contentEditable suppressContentEditableWarning={true}>X</th>
-                    </tr>
+                <tr>
+                    <th>Title</th>
+                    <th>Value</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {tablerows}
+                {tablerows}
                 </tbody>
             </table>
         </Card>

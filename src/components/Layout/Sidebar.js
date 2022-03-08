@@ -1,6 +1,6 @@
 import Datatable from "../Data/Datatable";
 
-import css from './Sidebar.module.css'
+import css from './Sidebar.module.css';
 
 const Sidebar = () => {
     return (
@@ -8,7 +8,7 @@ const Sidebar = () => {
             <h3>DATATABLE</h3>
             <Datatable/>
         </aside>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

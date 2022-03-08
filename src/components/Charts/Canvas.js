@@ -1,8 +1,10 @@
-import {useEffect, useRef} from "react";
+import {useContext, useEffect, useRef} from "react";
+import {TabledataContext} from "../../context/tabledata-context";
 
 import css from './Canvas.module.css';
 
 const Canvas = (props) => {
+    const [state, dispatch] = useContext(TabledataContext);
     const canvasRef = useRef();
 
     useEffect(() => {
@@ -23,9 +25,9 @@ const Canvas = (props) => {
         context.strokeStyle = "#FFF";
         context.lineWidth = 2;
         context.beginPath();
-        context.moveTo( GRAPH_RIGHT, GRAPH_BOTTOM );
-        context.lineTo( GRAPH_LEFT, GRAPH_BOTTOM );
-        context.lineTo( GRAPH_LEFT, GRAPH_TOP );
+        context.moveTo(GRAPH_RIGHT, GRAPH_BOTTOM);
+        context.lineTo(GRAPH_LEFT, GRAPH_BOTTOM);
+        context.lineTo(GRAPH_LEFT, GRAPH_TOP);
         context.stroke();
 
         // draw reference line at the top of the graph
@@ -33,29 +35,29 @@ const Canvas = (props) => {
         // set light grey color for reference lines
         // context.strokeStyle = "#BBB";
         context.lineWidth = 0.5;
-        context.moveTo( GRAPH_LEFT, GRAPH_TOP );
-        context.lineTo( GRAPH_RIGHT, GRAPH_TOP );
+        context.moveTo(GRAPH_LEFT, GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, GRAPH_TOP);
         context.stroke();
 
         // draw reference line 3/4 up from the bottom of the graph
         context.beginPath();
-        context.moveTo( GRAPH_LEFT, ( GRAPH_HEIGHT ) / 4 * 3 + GRAPH_TOP );
-        context.lineTo( GRAPH_RIGHT, ( GRAPH_HEIGHT ) / 4 * 3 + GRAPH_TOP );
+        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
         context.stroke();
 
         // draw reference line 1/2 way up the graph
         context.beginPath();
-        context.moveTo( GRAPH_LEFT, ( GRAPH_HEIGHT ) / 2 + GRAPH_TOP );
-        context.lineTo( GRAPH_RIGHT, ( GRAPH_HEIGHT ) / 2 + GRAPH_TOP );
+        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
         context.stroke();
 
         // draw reference line 1/4 up from the bottom of the graph
         context.beginPath();
-        context.moveTo( GRAPH_LEFT, ( GRAPH_HEIGHT ) / 4 + GRAPH_TOP );
-        context.lineTo( GRAPH_RIGHT, ( GRAPH_HEIGHT ) / 4 + GRAPH_TOP );
+        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
         context.stroke();
 
-    },[canvasRef]);
+    }, [canvasRef]);
 
     return (
         <div className={css.canvas}>
