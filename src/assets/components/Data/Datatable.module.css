@@ -3,6 +3,33 @@
     height: 100%;
 }
 
-.datatable > h3 {
+.datatable table {
+    background: #fff;
     color: #000;
+    height: 100%;
+    width: 100%;
+    border-radius: 25px;
+    padding: 25px;
+}
+
+.datatable th {
+    color: #000;
+    border: none;
+    border-right: 2px solid grey;
+}
+
+.datatable th:last-of-type {
+    border-right: none;
+}
+
+.datatable td {
+    color: #000;
+    border: none;
+    text-align: center;
+    border-top: 2px solid grey;
+    border-right: 2px solid grey;
+}
+
+.datatable td:last-of-type {
+    border-right: none;
 }

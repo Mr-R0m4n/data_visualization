@@ -1,14 +1,13 @@
 import Datatable from "../Data/Datatable";
 
 import css from './Sidebar.module.css'
-import Card from "../UI/Card";
 
 const Sidebar = () => {
     return (
-        <Card
-            className={css.sidebar}>
+        <aside className={css.sidebar}>
+            <h3>DATATABLE</h3>
             <Datatable/>
-        </Card>
+        </aside>
     )
 }
 
