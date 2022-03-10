@@ -4,7 +4,6 @@
 
 .canvas > canvas {
     border-radius: 25px;
-    height: 100%;
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.3) 0 10px 20px, rgba(0, 0, 0, 0.3) 0 6px 6px;
 }

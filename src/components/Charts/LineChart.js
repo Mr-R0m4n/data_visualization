@@ -7,7 +7,6 @@ const LineChart = () => {
 
     return (
         <Card className={css.lineChart}>
-            <h3>LINECHART</h3>
             <Canvas
                 color={'linear-gradient(to top, #E62F69, #eb5887)'}
                 chart={'line'}

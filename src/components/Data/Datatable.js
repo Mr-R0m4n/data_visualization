@@ -7,7 +7,7 @@ import css from './Datatable.module.css';
 
 
 const Datatable = () => {
-    const [state, dispatch] = useContext(TabledataContext);
+    const [state ,dispatch] = useContext(TabledataContext);
 
     const tableRef = useRef();
 

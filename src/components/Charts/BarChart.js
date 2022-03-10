@@ -7,7 +7,6 @@ const BarChart = () => {
 
     return (
         <Card className={css.barChart}>
-            <h3>BARCHART</h3>
             <Canvas
                 color={'linear-gradient(to top, #3A94EE, #75b4f3)'}
                 chart={'bar'}

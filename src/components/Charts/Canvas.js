@@ -1,17 +1,25 @@
-import {useContext, useEffect, useRef} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {TabledataContext} from "../../context/tabledata-context";
 
 import css from './Canvas.module.css';
 
 const Canvas = (props) => {
     const [state] = useContext(TabledataContext);
+    const [width, setWidth] = useState(0);
+    const [height, setHeight] = useState(0);
+    const pixelRatio = window.devicePixelRatio;
+    const ref = useRef(null);
     const canvasRef = useRef();
+    const canvas = canvasRef.current;
+
+    useEffect(() => {
+        setWidth(ref.current.clientWidth);
+        setHeight(ref.current.clientHeight);
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        canvas.width = `${canvas.clientWidth}`;
-        canvas.height = `${canvas.clientHeight}`;
 
         const GRAPH_TOP = 50;
         const GRAPH_BOTTOM = canvas.height - 100;
@@ -19,7 +27,6 @@ const Canvas = (props) => {
         const GRAPH_RIGHT = canvas.width - 50;
 
         const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
-        const GRAPH_WIDTH = GRAPH_RIGHT - GRAPH_LEFT;
 
         if (props.chart !== 'pie') {
             // draw X and Y axis
@@ -58,32 +65,38 @@ const Canvas = (props) => {
             context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
             context.stroke();
         }
-    }, [canvasRef, props.chart]);
+    }, [canvas, canvasRef, props.chart, state]);
 
     useEffect(() => {
         if(props.chart === 'pie') {
             const canvas = canvasRef.current;
             const context = canvas.getContext('2d');
 
-            const GRAPH_TOP = 50;
-            const GRAPH_BOTTOM = canvas.height - 100;
-            const GRAPH_LEFT = 100;
-            const GRAPH_RIGHT = canvas.width - 50;
+            const GRAPH_TOP = 0;
+            const GRAPH_BOTTOM = canvas.height;
+            const GRAPH_LEFT = 0;
+            const GRAPH_RIGHT = canvas.width;
 
             const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
             const GRAPH_WIDTH = GRAPH_RIGHT - GRAPH_LEFT;
 
-            context.strokeStyle = "#FFF";
-            context.lineWidth = 2;
-            context.arc(GRAPH_WIDTH / 2 + GRAPH_LEFT -25, GRAPH_HEIGHT / 2 + GRAPH_TOP + 25, (GRAPH_HEIGHT / 2), 0, 2*Math.PI)
+            context.arc(GRAPH_WIDTH / 2 + GRAPH_LEFT, GRAPH_HEIGHT / 2 + GRAPH_TOP, (GRAPH_WIDTH / 3), 0, 2*Math.PI)
             context.fillStyle = '#fff'
             context.fill()
         }
-    },[canvasRef])
+    },[canvas, props.chart, state])
+
+    const displayWidth = Math.floor(pixelRatio * width);
+    const displayHeight = Math.floor(pixelRatio * height);
+    const style = { width, height };
 
     return (
-        <div className={css.canvas}>
-            <canvas style={{background: `${props.color}`}} ref={canvasRef}/>
+        <div ref={ref} className={css.canvas}>
+            <canvas style={{background: `${props.color}`, style}}
+                    ref={canvasRef}
+                    width={displayWidth}
+                    height={displayHeight}
+            />
         </div>
     );
 };

@@ -7,7 +7,6 @@ const PieChart = () => {
 
     return (
         <Card className={css.pieChart}>
-            <h3>PIECHART</h3>
             <Canvas
                 color={'linear-gradient(to top, #5EB360, #8ec98f)'}
                 chart={'pie'}
