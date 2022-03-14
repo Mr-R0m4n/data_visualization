@@ -7,61 +7,8 @@ const Canvas = (props) => {
     const [state] = useContext(TabledataContext);
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
-    const pixelRatio = window.devicePixelRatio;
-    const ref = useRef(null);
+    const divRef = useRef(null);
     const canvasRef = useRef();
-    const canvas = canvasRef.current;
-
-    const drawCoordinateSystem = () => {
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-
-        const GRAPH_TOP = 50;
-        const GRAPH_BOTTOM = canvas.height - 100;
-        const GRAPH_LEFT = 100;
-        const GRAPH_RIGHT = canvas.width - 50;
-
-        const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
-
-        // draw X and Y axis
-        context.strokeStyle = "#FFF";
-        context.lineWidth = 2;
-        context.beginPath();
-        context.moveTo(GRAPH_RIGHT, GRAPH_BOTTOM);
-        context.lineTo(GRAPH_LEFT, GRAPH_BOTTOM);
-        context.lineTo(GRAPH_LEFT, GRAPH_TOP);
-        context.stroke();
-
-        // draw reference line at the top of the graph
-        context.beginPath();
-        context.lineWidth = 0.5;
-        context.moveTo(GRAPH_LEFT, GRAPH_TOP);
-        context.lineTo(GRAPH_RIGHT, GRAPH_TOP);
-        context.stroke();
-
-        // draw reference line 3/4 up from the bottom of the graph
-        context.beginPath();
-        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
-        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
-        context.stroke();
-
-        // draw reference line 1/2 way up the graph
-        context.beginPath();
-        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
-        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
-        context.stroke();
-
-        // draw reference line 1/4 up from the bottom of the graph
-        context.beginPath();
-        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
-        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
-        context.stroke();
-    }
-
-    useEffect(() => {
-        setWidth(ref.current.clientWidth);
-        setHeight(ref.current.clientHeight);
-    }, []);
 
     useEffect(() => {
         if (props.chart === 'pie') {
@@ -72,7 +19,7 @@ const Canvas = (props) => {
 
             const GRAPH_CENTER_X = canvas.width / 2;
             const GRAPH_CENTER_Y = canvas.height / 2;
-            const PIE_DIAMETER = canvas.width / 4;
+            const PIE_DIAMETER = canvas.height / 2.6;
 
             const values = state.values.filter(value => {
                 if (!value.isEmpty) {
@@ -135,7 +82,7 @@ const Canvas = (props) => {
                 context.fillText(label, labelXPos, labelYPos);
             }
         }
-    }, [canvas, props.chart, state]);
+    }, );
 
     useEffect(() => {
         if (props.chart === 'bar') {
@@ -187,40 +134,95 @@ const Canvas = (props) => {
                 const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
 
                 context.beginPath()
-                context.rect(GRAPH_LEFT + 50, GRAPH_BOTTOM, 50, -GRAPH_HEIGHT)
+                context.rect(GRAPH_LEFT + 50, GRAPH_BOTTOM, 50, - GRAPH_HEIGHT)
                 context.fillStyle = colours[0];
                 context.fill();
                 context.closePath();
             }
         }
-    }, [canvas, props.chart, state]);
+    }, );
 
-    useEffect(() => {
-        if (props.chart === 'line') {
-            const canvas = canvasRef.current;
-            const context = canvas.getContext('2d');
+    // useEffect(() => {
+    //     if (props.chart === 'line') {
+    //         const canvas = canvasRef.current;
+    //         const context = canvas.getContext('2d');
+    //
+    //         context.clearRect(0, 0, canvas.width, canvas.height);
+    //         drawCoordinateSystem();
+    //
+    //         const values = state.values.filter(value => {
+    //             if (!value.isEmpty) {
+    //                 return value;
+    //             } else {
+    //                 return null;
+    //             }
+    //         });
+    //
+    //         const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
+    //     }
+    // }, );
 
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            drawCoordinateSystem();
+    const drawCoordinateSystem = () => {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
 
-            const values = state.values.filter(value => {
-                if (!value.isEmpty) {
-                    return value;
-                } else {
-                    return null;
-                }
-            });
+        const GRAPH_TOP = 50;
+        const GRAPH_BOTTOM = canvas.height - 100;
+        const GRAPH_LEFT = 100;
+        const GRAPH_RIGHT = canvas.width - 50;
 
-            const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
-        }
-    }, [canvas, props.chart, state]);
+        const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
 
+        // draw X and Y axis
+        context.strokeStyle = "#FFF";
+        context.lineWidth = 2;
+        context.beginPath();
+        context.moveTo(GRAPH_RIGHT, GRAPH_BOTTOM);
+        context.lineTo(GRAPH_LEFT, GRAPH_BOTTOM);
+        context.lineTo(GRAPH_LEFT, GRAPH_TOP);
+        context.stroke();
+
+        // draw reference line at the top of the graph
+        context.beginPath();
+        context.lineWidth = 0.5;
+        context.moveTo(GRAPH_LEFT, GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, GRAPH_TOP);
+        context.stroke();
+
+        // draw reference line 3/4 up from the bottom of the graph
+        context.beginPath();
+        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
+        context.stroke();
+
+        // draw reference line 1/2 way up the graph
+        context.beginPath();
+        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
+        context.stroke();
+
+        // draw reference line 1/4 up from the bottom of the graph
+        context.beginPath();
+        context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
+        context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
+        context.stroke();
+    }
+
+    const resize = () => {
+        setHeight(divRef.current.clientHeight);
+        setWidth(divRef.current.clientWidth);
+    }
+
+    const pixelRatio = window.devicePixelRatio;
     const displayWidth = Math.floor(pixelRatio * width);
     const displayHeight = Math.floor(pixelRatio * height);
     const style = {background: `${props.color}`, width, height};
 
+    window.addEventListener('load', resize, false)
+    window.addEventListener('resize', resize, false)
+
     return (
-        <div ref={ref} className={css.canvas}>
+        <div ref={divRef} className={css.canvas}>
             <canvas style={style}
                     ref={canvasRef}
                     width={displayWidth}
