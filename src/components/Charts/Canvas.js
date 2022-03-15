@@ -28,7 +28,7 @@ const Canvas = (props) => {
                     return null;
                 }
             });
-           let sum = values.reduce((previous, current) => +previous + +current, 0);
+            let sum = values.reduce((previous, current) => +previous + +current, 0);
 
             const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
             const PI2 = (2 * Math.PI);
@@ -51,15 +51,24 @@ const Canvas = (props) => {
                     context.closePath();
                 }
 
+                let gradiant = context.createLinearGradient(
+                    GRAPH_CENTER_X + (PIE_DIAMETER),
+                    GRAPH_CENTER_Y + (PIE_DIAMETER),
+                    GRAPH_CENTER_X - (PIE_DIAMETER),
+                    GRAPH_CENTER_Y - (PIE_DIAMETER)
+                );
+                gradiant.addColorStop(0, '#5EB360');
+                gradiant.addColorStop(1, '#8ec98f');
+
                 context.lineWidth = 10;
-                context.strokeStyle = '#73BD75';
+                context.strokeStyle = gradiant;
                 context.stroke();
                 context.fillStyle = colours[i];
                 context.fill();
 
                 context.beginPath();
                 context.arc(GRAPH_CENTER_X, GRAPH_CENTER_Y, PIE_DIAMETER / 3, 0, PI2);
-                context.fillStyle = '#73BD75';
+                context.fillStyle = gradiant;
                 context.fill();
                 context.lineWidth = 3;
                 context.stroke();
@@ -82,7 +91,7 @@ const Canvas = (props) => {
                 context.fillText(label, labelXPos, labelYPos);
             }
         }
-    }, );
+    },);
 
     useEffect(() => {
         if (props.chart === 'bar') {
@@ -101,66 +110,142 @@ const Canvas = (props) => {
 
             const values = state.values.filter(value => {
                 if (!value.isEmpty) {
-                    return +value;
+                    return value;
                 } else {
                     return null;
                 }
-            }).sort( function(a , b) { return a - b; } );
+            });
 
-            if(values.length > 0){
-
-                let label = `${values[values.length-1]}`;
+            if (values.length > 0) {
+                let label = `${Math.max(...values)}`;
                 context.textAlign = 'right';
                 context.textBaseline = 'middle';
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP - 15);
 
-                label = `${+(values[values.length-1])*3/4}`;
+                label = `${Math.max(...values) * 3 / 4}`;
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 4 - 15);
 
-                label = `${+(values[values.length-1])/2}`;
+                label = `${Math.max(...values) / 2}`;
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 2 - 15);
 
-                label = `${+(values[values.length-1])/4}`;
+                label = `${Math.max(...values) / 4}`;
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT * 3 / 4 - 15);
 
                 const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
 
-                context.beginPath()
-                context.rect(GRAPH_LEFT + 50, GRAPH_BOTTOM, 50, - GRAPH_HEIGHT)
-                context.fillStyle = colours[0];
-                context.fill();
-                context.closePath();
+                const ratio = (GRAPH_RIGHT - GRAPH_LEFT) / 12;
+                let distance = ratio;
+                let labelXPos;
+                let labelYPos;
+
+                for (let i = 0; i < values.length; i++) {
+                    context.save();
+                    context.beginPath();
+                    context.rect(GRAPH_LEFT + distance, GRAPH_BOTTOM - 1, ratio / 2, -GRAPH_HEIGHT * (values[i] / Math.max(...values)));
+                    context.fillStyle = colours[i];
+                    context.fill();
+                    context.closePath();
+
+                    labelXPos = GRAPH_LEFT + distance;
+                    labelYPos = GRAPH_BOTTOM + 12;
+                    context.translate(labelXPos, labelYPos);
+                    context.rotate(Math.PI * 1.8);
+                    label = state.titles[i];
+                    context.textAlign = 'right';
+                    context.textBaseline = 'middle';
+                    context.font = "bold 20px";
+                    context.fillStyle = "#000";
+                    context.fillText(label, 0, 0);
+                    context.restore();
+
+                    distance = distance + ratio;
+                }
             }
         }
-    }, );
+    },);
 
-    // useEffect(() => {
-    //     if (props.chart === 'line') {
-    //         const canvas = canvasRef.current;
-    //         const context = canvas.getContext('2d');
-    //
-    //         context.clearRect(0, 0, canvas.width, canvas.height);
-    //         drawCoordinateSystem();
-    //
-    //         const values = state.values.filter(value => {
-    //             if (!value.isEmpty) {
-    //                 return value;
-    //             } else {
-    //                 return null;
-    //             }
-    //         });
-    //
-    //         const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
-    //     }
-    // }, );
+    useEffect(() => {
+        if (props.chart === 'line') {
+            const canvas = canvasRef.current;
+            const context = canvas.getContext('2d');
+
+            const GRAPH_TOP = 50;
+            const GRAPH_BOTTOM = canvas.height - 100;
+            const GRAPH_LEFT = 100;
+            const GRAPH_RIGHT = canvas.width - 50;
+
+            const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawCoordinateSystem();
+
+            const values = state.values.filter(value => {
+                if (!value.isEmpty) {
+                    return value;
+                } else {
+                    return null;
+                }
+            });
+
+            if (values.length > 0) {
+                let label = `${Math.max(...values)}`;
+                context.textAlign = 'right';
+                context.textBaseline = 'middle';
+                context.font = "bold 20px Arial";
+                context.fillStyle = "#fff";
+                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP - 15);
+
+                label = `${Math.max(...values) * 3 / 4}`;
+                context.font = "bold 20px Arial";
+                context.fillStyle = "#fff";
+                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 4 - 15);
+
+                label = `${Math.max(...values) / 2}`;
+                context.font = "bold 20px Arial";
+                context.fillStyle = "#fff";
+                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 2 - 15);
+
+                label = `${Math.max(...values) / 4}`;
+                context.font = "bold 20px Arial";
+                context.fillStyle = "#fff";
+                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT * 3 / 4 - 15);
+
+                const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
+
+                const ratio = (GRAPH_RIGHT - GRAPH_LEFT) / 12;
+                let distance = ratio;
+                let yPoint = GRAPH_BOTTOM;
+                let xPoint = GRAPH_LEFT;
+
+                for (let i = 0; i < values.length; i++) {
+                    context.beginPath();
+                    context.moveTo(xPoint, yPoint);
+                    context.lineTo(GRAPH_LEFT + distance, GRAPH_BOTTOM - GRAPH_HEIGHT * (values[i] / Math.max(...values)));
+                    context.lineWidth = 4;
+                    context.stroke();
+                    context.closePath();
+
+                    yPoint = GRAPH_BOTTOM - GRAPH_HEIGHT * (values[i] / Math.max(...values));
+                    xPoint = GRAPH_LEFT + distance;
+
+                    context.beginPath();
+                    context.arc(xPoint, yPoint, 10, 0, 2 * Math.PI);
+                    context.fill();
+                    context.closePath();
+
+                    distance = distance + ratio;
+                }
+            }
+        }
+    },);
 
     const drawCoordinateSystem = () => {
         const canvas = canvasRef.current;
@@ -206,20 +291,20 @@ const Canvas = (props) => {
         context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
         context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
         context.stroke();
-    }
+    };
 
     const resize = () => {
         setHeight(divRef.current.clientHeight);
         setWidth(divRef.current.clientWidth);
-    }
+    };
 
     const pixelRatio = window.devicePixelRatio;
     const displayWidth = Math.floor(pixelRatio * width);
     const displayHeight = Math.floor(pixelRatio * height);
     const style = {background: `${props.color}`, width, height};
 
-    window.addEventListener('load', resize, false)
-    window.addEventListener('resize', resize, false)
+    window.addEventListener('load', resize, false);
+    window.addEventListener('resize', resize, false);
 
     return (
         <div ref={divRef} className={css.canvas}>
