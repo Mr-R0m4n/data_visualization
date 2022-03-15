@@ -21,13 +21,16 @@ const Canvas = (props) => {
             const GRAPH_CENTER_Y = canvas.height / 2;
             const PIE_DIAMETER = canvas.height / 2.6;
 
-            const values = state.values.filter(value => {
+            let values = state.values.filter(value => {
                 if (!value.isEmpty) {
-                    return value;
+                    return value
                 } else {
                     return null;
                 }
             });
+
+            values = values.map(value => {return Math.abs(value)})
+
             let sum = values.reduce((previous, current) => +previous + +current, 0);
 
             const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
@@ -79,7 +82,7 @@ const Canvas = (props) => {
                 label = state.titles[i];
                 context.textAlign = 'center';
                 context.textBaseline = 'middle';
-                context.font = "bold 20px";
+                context.font = "bold 20px Arial";
                 context.fillStyle = "#000";
                 context.fillText(label, labelXPos, labelYPos);
 
@@ -201,45 +204,70 @@ const Canvas = (props) => {
                 context.textBaseline = 'middle';
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
-                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP - 15);
+                context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP);
 
                 label = `${Math.max(...values) * 3 / 4}`;
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
-                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 4 - 15);
+                context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP + GRAPH_HEIGHT / 4);
 
                 label = `${Math.max(...values) / 2}`;
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
-                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 2 - 15);
+                context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP + GRAPH_HEIGHT / 2);
 
                 label = `${Math.max(...values) / 4}`;
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
-                context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT * 3 / 4 - 15);
+                context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP + GRAPH_HEIGHT * 3 / 4);
 
-                const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
-
-                const ratio = (GRAPH_RIGHT - GRAPH_LEFT) / 12;
+                const ratio = (GRAPH_RIGHT - GRAPH_LEFT) / 9.5;
                 let distance = ratio;
-                let yPoint = GRAPH_BOTTOM;
-                let xPoint = GRAPH_LEFT;
+                let yPoint = GRAPH_BOTTOM - GRAPH_HEIGHT * (values[0] / Math.max(...values));
+                let xPoint = GRAPH_LEFT + 50;
 
-                for (let i = 0; i < values.length; i++) {
+                for (let i = 1; i < values.length; i++) {
                     context.beginPath();
                     context.moveTo(xPoint, yPoint);
                     context.lineTo(GRAPH_LEFT + distance, GRAPH_BOTTOM - GRAPH_HEIGHT * (values[i] / Math.max(...values)));
                     context.lineWidth = 4;
+                    context.strokeStyle = '#fff'
                     context.stroke();
                     context.closePath();
 
                     yPoint = GRAPH_BOTTOM - GRAPH_HEIGHT * (values[i] / Math.max(...values));
                     xPoint = GRAPH_LEFT + distance;
 
+                    distance = distance + ratio;
+                }
+
+                const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
+
+                distance = ratio;
+                xPoint = GRAPH_LEFT + 50;
+
+                for (let i = 0; i <= values.length; i++) {
+                    yPoint = GRAPH_BOTTOM - GRAPH_HEIGHT * (values[i] / Math.max(...values));
+
                     context.beginPath();
-                    context.arc(xPoint, yPoint, 10, 0, 2 * Math.PI);
+                    context.arc(xPoint, yPoint, 10, 0, 2 * Math.PI)
+                    context.strokeStyle = '#fff'
+                    context.lineWidth = 8;
+                    context.stroke();
+                    context.fillStyle = colours[i]
                     context.fill();
                     context.closePath();
+
+                    context.beginPath();
+                    label = state.titles[i];
+                    context.textAlign = 'right';
+                    context.textBaseline = 'middle';
+                    context.font = "bold 20px";
+                    context.fillStyle = "#000";
+                    context.fillText(label, xPoint - 20, yPoint + 20);
+                    context.closePath();
+
+                    xPoint = GRAPH_LEFT + distance;
 
                     distance = distance + ratio;
                 }
