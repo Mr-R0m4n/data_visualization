@@ -1,7 +1,13 @@
 .sidebar {
     background: #fff;
-    grid-area: 1 / 1 / 2 / 2;
+    grid-area: 1 / 1 / 4 / 2;
     padding: 25px;
     border-radius: 25px;
     box-shadow: rgba(0, 0, 0, 0.3) 0 10px 20px, rgba(0, 0, 0, 0.3) 0 6px 6px;
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        grid-area: 1 / 1 / 4 / 2;
+    }
 }

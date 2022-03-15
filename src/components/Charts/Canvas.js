@@ -28,9 +28,7 @@ const Canvas = (props) => {
                     return null;
                 }
             });
-
             values = values.map(value => {return Math.abs(value)})
-
             let sum = values.reduce((previous, current) => +previous + +current, 0);
 
             const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
@@ -40,6 +38,15 @@ const Canvas = (props) => {
             let labelXPos;
             let labelYPos;
             let label;
+
+            let gradiant = context.createLinearGradient(
+                GRAPH_CENTER_X + (PIE_DIAMETER),
+                GRAPH_CENTER_Y + (PIE_DIAMETER),
+                GRAPH_CENTER_X - (PIE_DIAMETER),
+                GRAPH_CENTER_Y - (PIE_DIAMETER)
+            );
+            gradiant.addColorStop(0, '#5EB360');
+            gradiant.addColorStop(1, '#8ec98f');
 
             for (let i = 0; i < values.length; i++) {
                 context.beginPath();
@@ -54,20 +61,12 @@ const Canvas = (props) => {
                     context.closePath();
                 }
 
-                let gradiant = context.createLinearGradient(
-                    GRAPH_CENTER_X + (PIE_DIAMETER),
-                    GRAPH_CENTER_Y + (PIE_DIAMETER),
-                    GRAPH_CENTER_X - (PIE_DIAMETER),
-                    GRAPH_CENTER_Y - (PIE_DIAMETER)
-                );
-                gradiant.addColorStop(0, '#5EB360');
-                gradiant.addColorStop(1, '#8ec98f');
-
                 context.lineWidth = 10;
                 context.strokeStyle = gradiant;
                 context.stroke();
                 context.fillStyle = colours[i];
                 context.fill();
+                context.closePath()
 
                 context.beginPath();
                 context.arc(GRAPH_CENTER_X, GRAPH_CENTER_Y, PIE_DIAMETER / 3, 0, PI2);
@@ -76,6 +75,12 @@ const Canvas = (props) => {
                 context.lineWidth = 3;
                 context.stroke();
                 context.closePath();
+            }
+
+            for (let i = 0; i < values.length; i++) {
+                context.beginPath();
+                startAngle = endAngle;
+                endAngle = startAngle + (values[i] / sum) * PI2;
 
                 labelXPos = GRAPH_CENTER_X + PIE_DIAMETER * 1.2 * Math.cos(startAngle + Math.PI * values[i] / sum);
                 labelYPos = GRAPH_CENTER_Y + PIE_DIAMETER * 1.2 * Math.sin(startAngle + Math.PI * values[i] / sum);
@@ -92,6 +97,7 @@ const Canvas = (props) => {
                 context.font = "bold 20px Arial";
                 context.fillStyle = "#fff";
                 context.fillText(label, labelXPos, labelYPos);
+                context.closePath()
             }
         }
     },);
@@ -105,7 +111,6 @@ const Canvas = (props) => {
             const GRAPH_BOTTOM = canvas.height - 100;
             const GRAPH_LEFT = 100;
             const GRAPH_RIGHT = canvas.width - 50;
-
             const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
 
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -119,7 +124,7 @@ const Canvas = (props) => {
                 }
             });
 
-            if (values.length > 0) {
+            if (values.length) {
                 let label = `${Math.max(...values)}`;
                 context.textAlign = 'right';
                 context.textBaseline = 'middle';
@@ -128,22 +133,15 @@ const Canvas = (props) => {
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP - 15);
 
                 label = `${Math.max(...values) * 3 / 4}`;
-                context.font = "bold 20px Arial";
-                context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 4 - 15);
 
                 label = `${Math.max(...values) / 2}`;
-                context.font = "bold 20px Arial";
-                context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT / 2 - 15);
 
                 label = `${Math.max(...values) / 4}`;
-                context.font = "bold 20px Arial";
-                context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_RIGHT, GRAPH_TOP + GRAPH_HEIGHT * 3 / 4 - 15);
 
                 const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
-
                 const ratio = (GRAPH_RIGHT - GRAPH_LEFT) / 12;
                 let distance = ratio;
                 let labelXPos;
@@ -184,7 +182,6 @@ const Canvas = (props) => {
             const GRAPH_BOTTOM = canvas.height - 100;
             const GRAPH_LEFT = 100;
             const GRAPH_RIGHT = canvas.width - 50;
-
             const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
 
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -198,7 +195,7 @@ const Canvas = (props) => {
                 }
             });
 
-            if (values.length > 0) {
+            if (values.length) {
                 let label = `${Math.max(...values)}`;
                 context.textAlign = 'right';
                 context.textBaseline = 'middle';
@@ -207,24 +204,19 @@ const Canvas = (props) => {
                 context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP);
 
                 label = `${Math.max(...values) * 3 / 4}`;
-                context.font = "bold 20px Arial";
-                context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP + GRAPH_HEIGHT / 4);
 
                 label = `${Math.max(...values) / 2}`;
-                context.font = "bold 20px Arial";
-                context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP + GRAPH_HEIGHT / 2);
 
                 label = `${Math.max(...values) / 4}`;
-                context.font = "bold 20px Arial";
-                context.fillStyle = "#fff";
                 context.fillText(label, GRAPH_LEFT - 20, GRAPH_TOP + GRAPH_HEIGHT * 3 / 4);
 
+                const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
                 const ratio = (GRAPH_RIGHT - GRAPH_LEFT) / 9.5;
                 let distance = ratio;
                 let yPoint = GRAPH_BOTTOM - GRAPH_HEIGHT * (values[0] / Math.max(...values));
-                let xPoint = GRAPH_LEFT + 50;
+                let xPoint = GRAPH_LEFT;
 
                 for (let i = 1; i < values.length; i++) {
                     context.beginPath();
@@ -241,10 +233,8 @@ const Canvas = (props) => {
                     distance = distance + ratio;
                 }
 
-                const colours = ['#ff4000', '#ffbf00', '#bfff00', '#80ff00', '#00ff40', '#00ffff', '#0080ff', '#0040ff', '#8000ff', '#ff00ff'];
-
                 distance = ratio;
-                xPoint = GRAPH_LEFT + 50;
+                xPoint = GRAPH_LEFT;
 
                 for (let i = 0; i <= values.length; i++) {
                     yPoint = GRAPH_BOTTOM - GRAPH_HEIGHT * (values[i] / Math.max(...values));
@@ -264,11 +254,10 @@ const Canvas = (props) => {
                     context.textBaseline = 'middle';
                     context.font = "bold 20px";
                     context.fillStyle = "#000";
-                    context.fillText(label, xPoint - 20, yPoint + 20);
+                    context.fillText(label, xPoint - 20, yPoint - 20);
                     context.closePath();
 
                     xPoint = GRAPH_LEFT + distance;
-
                     distance = distance + ratio;
                 }
             }
@@ -286,7 +275,6 @@ const Canvas = (props) => {
 
         const GRAPH_HEIGHT = GRAPH_BOTTOM - GRAPH_TOP;
 
-        // draw X and Y axis
         context.strokeStyle = "#FFF";
         context.lineWidth = 2;
         context.beginPath();
@@ -295,26 +283,22 @@ const Canvas = (props) => {
         context.lineTo(GRAPH_LEFT, GRAPH_TOP);
         context.stroke();
 
-        // draw reference line at the top of the graph
         context.beginPath();
         context.lineWidth = 0.5;
         context.moveTo(GRAPH_LEFT, GRAPH_TOP);
         context.lineTo(GRAPH_RIGHT, GRAPH_TOP);
         context.stroke();
 
-        // draw reference line 3/4 up from the bottom of the graph
         context.beginPath();
         context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
         context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 * 3 + GRAPH_TOP);
         context.stroke();
 
-        // draw reference line 1/2 way up the graph
         context.beginPath();
         context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
         context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 2 + GRAPH_TOP);
         context.stroke();
 
-        // draw reference line 1/4 up from the bottom of the graph
         context.beginPath();
         context.moveTo(GRAPH_LEFT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);
         context.lineTo(GRAPH_RIGHT, (GRAPH_HEIGHT) / 4 + GRAPH_TOP);

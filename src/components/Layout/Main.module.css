@@ -5,3 +5,11 @@
     grid-template-rows: repeat(2, 1fr);
     gap: 25px;
 }
+
+@media (max-width: 1024px) {
+    .main {
+        grid-area: 1 / 2 / 4 / 3;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+    }
+}

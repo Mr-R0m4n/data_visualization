@@ -2,3 +2,9 @@
     background: #fff;
     grid-area: 1 / 1 / 2 / 2;
 }
+
+@media (max-width: 1024px) {
+    .pieChart {
+        grid-area: 1 / 1 / 2 / 2;
+    }
+}
