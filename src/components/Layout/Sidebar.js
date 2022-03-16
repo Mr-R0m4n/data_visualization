@@ -2,9 +2,9 @@ import Datatable from "../Data/Datatable";
 
 import css from './Sidebar.module.css';
 
-const Sidebar = () => {
+const Sidebar = (props) => {
     return (
-        <aside className={css.sidebar}>
+        <aside style={{display:`${props.display}`}} className={css.sidebar}>
             <Datatable/>
         </aside>
     );

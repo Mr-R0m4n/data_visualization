@@ -4,9 +4,9 @@ import LineChart from "../Charts/LineChart";
 
 import css from './Main.module.css';
 
-const Main = () => {
+const Main = (props) => {
     return (
-        <main className={css.main}>
+        <main style={{display:`${props.display}`}} className={css.main}>
             <PieChart/>
             <BarChart/>
             <LineChart/>
